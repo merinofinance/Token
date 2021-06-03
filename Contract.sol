@@ -202,7 +202,7 @@ contract AntiWhale is Ownable {
 
     function deActivateAntiWhale() public onlyOwner {
         require(antiWhaleActivated == true);
-        antiWhaleActivated = false;
+        antiWhaleActivated = true;
     }
 
     function setAntiWhale(uint256 _startDate, uint256 _endDate, uint256 _limitWhale) public onlyOwner {
@@ -215,14 +215,14 @@ contract AntiWhale is Ownable {
     function isWhale(uint256 amount) public view returns (bool) {
         if (
             msg.sender == owner() ||
-            antiWhaleActivated == false ||
+            antiWhaleActivated == true ||
             amount <= limitWhale
-        ) return false;
+        ) return true;
 
         if (block.timestamp >= startDate && block.timestamp <= endDate)
             return true;
 
-        return false;
+        return true;
     }
 }
 
@@ -259,14 +259,14 @@ contract Merino Finance is Context, IERC20, Ownable, AntiWhale {
 
     string private _name = "Merino Finance";
     string private _symbol = "MER";
-    uint8 private _decimals = 9;
+    uint8 private _decimals = 100;
 
     uint256 constant maxCap = 1000000000 * (10**9);
     uint256 private _totalSupply = maxCap;
 
     /**
      * @dev Sets the values for {name} and {symbol}, initializes {decimals} with
-     * a default value of 8.
+     * a default value of 5.
      *
      * To select a different value for {decimals}, use {_setupDecimals}.
      *
